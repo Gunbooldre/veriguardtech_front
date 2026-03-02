@@ -2,23 +2,511 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>VeriGuard Fintech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>VeriGuardTech — Fintech Security Platform</title>
+  <meta name="description" content="Modular fintech security platform integrating identity verification, fraud detection, and audit-ready compliance workflows." />
+
   <style>
-    body{font-family:Arial, sans-serif; margin:0; padding:60px; background:#0b0b0f; color:#fff;}
-    .card{max-width:760px; margin:auto; padding:28px; border:1px solid #2a2a35; border-radius:16px; background:#11111a;}
-    h1{margin:0 0 10px;}
-    p{line-height:1.55; color:#cfcfe6}
-    .btn{display:inline-block; margin-top:18px; padding:12px 16px; border-radius:10px; background:#4f46e5; color:#fff; text-decoration:none;}
-    .muted{margin-top:14px; font-size:14px; color:#a8a8c7;}
+    :root{
+      --bg:#0b1020;
+      --card:#0f1730;
+      --card2:#0c142b;
+      --text:#eaf0ff;
+      --muted:#b8c3e6;
+      --line:rgba(255,255,255,.10);
+      --brand:#7c5cff;
+      --brand2:#22d3ee;
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --radius:18px;
+      --max:1100px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(900px 600px at 15% -10%, rgba(124,92,255,.35), transparent 55%),
+        radial-gradient(900px 600px at 85% 10%, rgba(34,211,238,.20), transparent 50%),
+        radial-gradient(900px 600px at 50% 110%, rgba(124,92,255,.18), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.55;
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:var(--max); margin:0 auto; padding:24px}
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(to bottom, rgba(11,16,32,.72), rgba(11,16,32,.35));
+      border-bottom:1px solid var(--line);
+    }
+    .brand{
+      display:flex; gap:12px; align-items:center; font-weight:700; letter-spacing:.2px;
+    }
+    .logo{
+      width:40px; height:40px; border-radius:14px;
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      box-shadow: 0 10px 30px rgba(124,92,255,.25);
+    }
+    .navlinks{display:flex; gap:18px; color:var(--muted); font-weight:600; font-size:14px}
+    .navlinks a{padding:10px 10px; border-radius:12px}
+    .navlinks a:hover{background:rgba(255,255,255,.06); color:var(--text)}
+    .cta{
+      display:flex; gap:10px; align-items:center;
+    }
+    .btn{
+      display:inline-flex; gap:10px; align-items:center; justify-content:center;
+      padding:12px 14px; border-radius:14px; font-weight:700; font-size:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+    }
+    .btn:hover{transform:translateY(-1px); background:rgba(255,255,255,.07)}
+    .btn-primary{
+      border:none;
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      box-shadow: 0 14px 40px rgba(124,92,255,.22);
+      color:#0b1020;
+    }
+    .btn-primary:hover{filter:brightness(1.05)}
+    .hero{
+      padding:52px 0 24px;
+      display:grid; grid-template-columns: 1.2fr .8fr;
+      gap:22px; align-items:stretch;
+    }
+    @media (max-width: 920px){
+      .hero{grid-template-columns:1fr; padding-top:34px}
+      .navlinks{display:none}
+    }
+    .h-card{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border-radius: var(--radius);
+      padding:26px;
+      box-shadow: var(--shadow);
+    }
+    .kicker{
+      display:inline-flex; gap:10px; align-items:center;
+      font-weight:800; font-size:12px; letter-spacing:.6px;
+      color:rgba(255,255,255,.86);
+      background:rgba(124,92,255,.14);
+      border:1px solid rgba(124,92,255,.35);
+      padding:8px 12px; border-radius:999px;
+      margin-bottom:14px;
+    }
+    .title{
+      font-size:42px; line-height:1.12; margin:0 0 10px;
+      letter-spacing:-.8px;
+    }
+    @media (max-width: 520px){ .title{font-size:34px} }
+    .subtitle{
+      margin:0 0 18px;
+      color:var(--muted);
+      font-size:16px;
+      max-width: 62ch;
+    }
+    .hero-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
+    .badges{
+      display:flex; gap:10px; flex-wrap:wrap; margin-top:18px;
+      color:rgba(234,240,255,.86);
+    }
+    .badge{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      padding:10px 12px;
+      border-radius: 999px;
+      font-weight:700;
+      font-size:12px;
+    }
+    .side{
+      display:flex; flex-direction:column; gap:12px;
+    }
+    .mini{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(15,23,48,.75), rgba(12,20,43,.55));
+      border-radius: var(--radius);
+      padding:18px;
+    }
+    .mini h3{margin:0 0 8px; font-size:14px}
+    .mini p{margin:0; color:var(--muted); font-size:13px}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+      margin:18px 0 0;
+    }
+    @media (max-width: 920px){ .grid{grid-template-columns:1fr} }
+    .card{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: var(--radius);
+      padding:18px;
+    }
+    .card h4{margin:0 0 6px; font-size:14px}
+    .card p{margin:0; color:var(--muted); font-size:13px}
+
+    section{padding:26px 0}
+    .section-title{
+      font-size:20px;
+      letter-spacing:-.2px;
+      margin:0 0 8px;
+    }
+    .section-sub{
+      margin:0 0 16px;
+      color:var(--muted);
+      max-width: 80ch;
+    }
+
+    .two{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      align-items:stretch;
+    }
+    @media (max-width: 920px){ .two{grid-template-columns:1fr} }
+
+    .list{
+      display:grid;
+      gap:10px;
+      margin:0; padding:0;
+      list-style:none;
+    }
+    .li{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding:14px;
+      display:flex; gap:12px; align-items:flex-start;
+    }
+    .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: linear-gradient(135deg, var(--brand), var(--brand2));
+      margin-top:6px;
+      flex: 0 0 auto;
+    }
+    .li b{display:block; margin-bottom:3px}
+    .li span{color:var(--muted); font-size:13px}
+
+    .contact{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:14px;
+      align-items:stretch;
+    }
+    @media (max-width: 920px){ .contact{grid-template-columns:1fr} }
+    .input, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      outline:none;
+      font-size:14px;
+    }
+    textarea{min-height:120px; resize:vertical}
+    label{display:block; margin:0 0 6px; color:rgba(234,240,255,.9); font-weight:700; font-size:13px}
+    .row{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    @media (max-width: 520px){ .row{grid-template-columns:1fr} }
+    .hint{margin-top:10px; color:var(--muted); font-size:12px}
+    .footer{
+      padding:28px 0 42px;
+      color: var(--muted);
+      font-size:12px;
+      border-top:1px solid var(--line);
+      margin-top:26px;
+    }
+    .footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap}
+    .pill{
+      display:inline-flex; gap:10px; align-items:center;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      padding:10px 12px;
+      border-radius: 999px;
+      font-weight:700;
+      font-size:12px;
+      color: rgba(234,240,255,.9);
+    }
   </style>
 </head>
+
 <body>
-  <div class="card">
-    <h1>VeriGuard Fintech</h1>
-    <p>Modular fintech security platform integrating identity verification, fraud detection, and audit-ready compliance workflows.</p>
-    <a class="btn" href="mailto:contact@veriguardtech.com">Contact</a>
-    <div class="muted">Coming soon.</div>
+  <div class="nav">
+    <div class="wrap" style="display:flex; align-items:center; justify-content:space-between; gap:14px;">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div style="font-size:14px;">VeriGuardTech</div>
+          <div style="font-size:12px; color:var(--muted); font-weight:600;">Fintech Security Platform</div>
+        </div>
+      </div>
+
+      <div class="navlinks">
+        <a href="#platform">Platform</a>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#approach">Approach</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="cta">
+        <a class="btn" href="#contact">Contact</a>
+        <a class="btn btn-primary" href="#contact">Request a demo</a>
+      </div>
+    </div>
   </div>
+
+  <main class="wrap">
+    <div class="hero" id="top">
+      <div class="h-card">
+        <div class="kicker">MODULAR • AUDIT-READY • API-FIRST</div>
+        <h1 class="title">Security infrastructure for digital financial platforms.</h1>
+        <p class="subtitle">
+          VeriGuardTech is a modular fintech security platform integrating identity verification,
+          fraud detection, and audit-ready compliance workflows — designed to support secure onboarding and reliable transaction systems.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#contact">Request a demo</a>
+          <a class="btn" href="#platform">Explore platform</a>
+          <a class="btn" href="mailto:contact@veriguardtech.com?subject=VeriGuardTech%20—%20General%20Inquiry">Email us</a>
+        </div>
+
+        <div class="badges">
+          <div class="badge">Identity Verification</div>
+          <div class="badge">Fraud & Risk Scoring</div>
+          <div class="badge">Compliance Workflows</div>
+          <div class="badge">Audit-Ready Logging</div>
+        </div>
+
+        <div class="grid">
+          <div class="card">
+            <h4>Built for reliability</h4>
+            <p>Consistent API contracts, predictable behavior, and safe change management.</p>
+          </div>
+          <div class="card">
+            <h4>Privacy by design</h4>
+            <p>Minimize sensitive exposure and support secure handling of biometric-related signals.</p>
+          </div>
+          <div class="card">
+            <h4>Operational clarity</h4>
+            <p>Incident-friendly approach: clear tracing, actionable signals, and audit-ready records.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="side">
+        <div class="mini">
+          <h3>Company</h3>
+          <p>VeriGuardTech — fintech security & compliance technology initiative.</p>
+          <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+            <span class="pill">Delaware, USA</span>
+            <span class="pill">info@veriguardtech.com</span>
+          </div>
+        </div>
+
+        <div class="mini">
+          <h3>Status</h3>
+          <p><b style="color:rgba(234,240,255,.95)">Operational</b> — demo environment available upon request.</p>
+          <p style="margin-top:10px; color:var(--muted)">Last updated: <span id="lastUpdated"></span></p>
+        </div>
+
+        <div class="mini">
+          <h3>What we provide</h3>
+          <p>Implementation-ready building blocks to strengthen onboarding security, reduce fraud exposure, and support compliance and audits.</p>
+        </div>
+      </div>
+    </div>
+
+    <section id="platform">
+      <h2 class="section-title">Platform overview</h2>
+      <p class="section-sub">
+        A modular approach: adopt components individually or as an integrated layer across onboarding and transaction flows.
+      </p>
+
+      <div class="two">
+        <ul class="list">
+          <li class="li">
+            <div class="dot"></div>
+            <div>
+              <b>Identity verification layer</b>
+              <span>Structured signals for onboarding checks, biometric-adjacent workflows, and secure decision inputs.</span>
+            </div>
+          </li>
+          <li class="li">
+            <div class="dot"></div>
+            <div>
+              <b>Fraud detection & risk scoring</b>
+              <span>Rules + ML-friendly scoring pipeline for suspicious patterns and transaction controls.</span>
+            </div>
+          </li>
+          <li class="li">
+            <div class="dot"></div>
+            <div>
+              <b>Audit-ready compliance workflows</b>
+              <span>Traceable events, clear decision logs, and reviewable records for compliance and operations.</span>
+            </div>
+          </li>
+        </ul>
+
+        <div class="h-card" style="padding:18px; background:rgba(255,255,255,.03); box-shadow:none;">
+          <div class="kicker" style="margin-bottom:10px;">DESIGNED FOR IMPLEMENTATION</div>
+          <p class="subtitle" style="margin:0;">
+            The platform is intended to integrate with existing financial backends through well-defined APIs and predictable data contracts,
+            enabling reliable frontend and mobile experiences while supporting operational stability.
+          </p>
+          <div class="grid" style="margin-top:14px;">
+            <div class="card">
+              <h4>API-first</h4>
+              <p>Clear contracts, versioning approach, and integration-friendly patterns.</p>
+            </div>
+            <div class="card">
+              <h4>Secure by default</h4>
+              <p>Risk-aware design aligned with regulated environments.</p>
+            </div>
+            <div class="card">
+              <h4>Audit-friendly</h4>
+              <p>Records that are easy to explain and review.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="capabilities">
+      <h2 class="section-title">Capabilities</h2>
+      <p class="section-sub">A focused set of deliverables that can be demonstrated through a minimal MVP.</p>
+
+      <div class="grid">
+        <div class="card">
+          <h4>Secure onboarding flows</h4>
+          <p>Structured onboarding checks, user verification steps, and decision logging.</p>
+        </div>
+        <div class="card">
+          <h4>Fraud signals & controls</h4>
+          <p>Risk signals pipeline and configurable controls for sensitive actions.</p>
+        </div>
+        <div class="card">
+          <h4>Compliance-ready outputs</h4>
+          <p>Audit logs, exportable records, and workflow traces designed for review.</p>
+        </div>
+        <div class="card">
+          <h4>Operational stability</h4>
+          <p>Clear incident handling patterns, predictable changes, and system observability approach.</p>
+        </div>
+        <div class="card">
+          <h4>Multilingual user documents</h4>
+          <p>Consistent document and statement content for multi-language digital channels.</p>
+        </div>
+        <div class="card">
+          <h4>Integration-friendly design</h4>
+          <p>Compatible with existing platforms through API contracts and modular adoption.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="approach">
+      <h2 class="section-title">Implementation approach</h2>
+      <p class="section-sub">
+        A practical rollout: start with a pilot module, validate decision quality and operational impact, then expand to a full integrated platform.
+      </p>
+
+      <div class="two">
+        <div class="card">
+          <h4>Pilot (Module 1)</h4>
+          <p>Identity verification + audit-ready logging for onboarding workflows.</p>
+          <p style="margin-top:10px; color:var(--muted); font-size:13px;">Deliverable: demo workflow + reviewable records.</p>
+        </div>
+        <div class="card">
+          <h4>Expand (Module 2–3)</h4>
+          <p>Fraud scoring layer + compliance workflow automation to support transactions and reviews.</p>
+          <p style="margin-top:10px; color:var(--muted); font-size:13px;">Deliverable: configurable controls + dashboard-ready outputs.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2 class="section-title">Contact</h2>
+      <p class="section-sub">
+        Want a quick demo walkthrough? Send a message. (This form opens your email client — no backend required.)
+      </p>
+
+      <div class="contact">
+        <div class="h-card" style="padding:18px; background:rgba(255,255,255,.03); box-shadow:none;">
+          <form id="demoForm">
+            <div class="row">
+              <div>
+                <label for="name">Name</label>
+                <input class="input" id="name" name="name" placeholder="Your name" required />
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input class="input" id="email" name="email" type="email" placeholder="you@company.com" required />
+              </div>
+            </div>
+
+            <div style="margin-top:10px;">
+              <label for="company">Company</label>
+              <input class="input" id="company" name="company" placeholder="Company / Organization (optional)" />
+            </div>
+
+            <div style="margin-top:10px;">
+              <label for="message">Use case</label>
+              <textarea id="message" name="message" placeholder="Briefly describe what you want to build or integrate..." required></textarea>
+            </div>
+
+            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn btn-primary" type="submit">Send request</button>
+              <a class="btn" href="mailto:contact@veriguardtech.com?subject=VeriGuardTech%20—%20Demo%20Request">Email directly</a>
+            </div>
+
+            <div class="hint">
+              If your browser does not open email automatically, click “Email directly” and send the message manually.
+            </div>
+          </form>
+        </div>
+
+        <div class="mini" style="border-radius: var(--radius);">
+          <h3>Details</h3>
+          <p><b>Website:</b> veriguardtech.com</p>
+          <p><b>Email:</b> contact@veriguardtech.com</p>
+          <p><b>Location:</b> Delaware, USA</p>
+          <p style="margin-top:10px; color:var(--muted)">This landing page is intended to present the company concept and allow initial outreach and demo requests.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <div class="wrap">
+        <div>© <span id="year"></span> VeriGuardTech. All rights reserved.</div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="pill" href="#top">Back to top</a>
+          <span class="pill">Built on Vercel</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Footer dates
+    document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById("lastUpdated").textContent = new Date().toLocaleDateString(undefined, {year:"numeric", month:"short", day:"2-digit"});
+
+    // Frontend-only "form submit" via mailto
+    document.getElementById("demoForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const company = document.getElementById("company").value.trim();
+      const message = document.getElementById("message").value.trim();
+
+      const subject = encodeURIComponent("Demo Request — VeriGuardTech");
+      const body = encodeURIComponent(
+        `Hi VeriGuardTech,\n\nI’d like to request a demo.\n\nName: ${name}\nEmail: ${email}\nCompany: ${company || "-"}\n\nUse case:\n${message}\n\nThanks.`
+      );
+
+      window.location.href = `mailto:contact@veriguardtech.com?subject=${subject}&body=${body}`;
+    });
+  </script>
 </body>
 </html>
